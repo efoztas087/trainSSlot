@@ -62,17 +62,17 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Page header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
           <p className="text-xs font-semibold text-[#A8FF3A] uppercase tracking-widest mb-1">
             {dayName} · {dateStr}
           </p>
-          <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
+          <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
             Welcome back, {trainerName}
           </h1>
           <p className="text-[#545B6A] text-sm mt-2">Here's how your training business is performing today.</p>
         </div>
-        <div className="flex gap-3 flex-shrink-0 mt-1">
+        <div className="flex gap-3 flex-shrink-0">
           <Link href="/clients/new">
             <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[#1E2229] text-[#E8EAF0] text-sm font-medium hover:bg-[#171A1F] transition-colors">
               <Users className="h-4 w-4" /> Add Client
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
       )}
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           {
             label: 'Active Clients',
@@ -242,25 +242,27 @@ export default async function DashboardPage() {
       </div>
 
       {/* Own the week banner */}
-      <div className="bg-[#A8FF3A] rounded-2xl p-8 flex items-center justify-between">
-        <div>
-          <Zap className="h-8 w-8 text-[#0A0B0E] mb-3" />
-          <h2 className="font-[family-name:var(--font-heading)] text-4xl text-[#0A0B0E] uppercase leading-none tracking-tight">Own the week.</h2>
-          <p className="text-[#0A0B0E]/70 text-sm mt-2 max-w-sm">
-            Stay consistent, track every client, and let the data prove your impact.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Link href="/clients">
-            <button className="px-5 py-2.5 bg-[#0A0B0E] text-[#E8EAF0] text-sm font-semibold rounded-lg hover:bg-[#131519] transition-colors">
-              View Clients
-            </button>
-          </Link>
-          <Link href="/packages">
-            <button className="px-5 py-2.5 bg-[#0A0B0E]/15 text-[#0A0B0E] text-sm font-semibold rounded-lg border border-[#0A0B0E]/20 hover:bg-[#0A0B0E]/25 transition-colors">
-              Packages
-            </button>
-          </Link>
+      <div className="bg-[#A8FF3A] rounded-2xl p-6 sm:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <Zap className="h-8 w-8 text-[#0A0B0E] mb-3" />
+            <h2 className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl text-[#0A0B0E] uppercase leading-none tracking-tight">Own the week.</h2>
+            <p className="text-[#0A0B0E]/70 text-sm mt-2 max-w-sm">
+              Stay consistent, track every client, and let the data prove your impact.
+            </p>
+          </div>
+          <div className="flex gap-3 flex-shrink-0">
+            <Link href="/clients">
+              <button className="px-5 py-2.5 bg-[#0A0B0E] text-[#E8EAF0] text-sm font-semibold rounded-lg hover:bg-[#131519] transition-colors">
+                View Clients
+              </button>
+            </Link>
+            <Link href="/packages">
+              <button className="px-5 py-2.5 bg-[#0A0B0E]/15 text-[#0A0B0E] text-sm font-semibold rounded-lg border border-[#0A0B0E]/20 hover:bg-[#0A0B0E]/25 transition-colors">
+                Packages
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

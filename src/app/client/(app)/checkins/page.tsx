@@ -102,13 +102,13 @@ export default function ClientCheckinsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Check-ins</h1>
+          <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Check-ins</h1>
           <p className="text-[#545B6A] text-sm mt-2">Log your weekly progress for your trainer.</p>
         </div>
         {!open && (
-          <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#A8FF3A] text-[#0A0B0E] text-sm font-semibold hover:bg-[#C8FF6A] transition-colors mt-1">
+          <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#A8FF3A] text-[#0A0B0E] text-sm font-semibold hover:bg-[#C8FF6A] transition-colors flex-shrink-0">
             <Plus className="h-4 w-4" /> New Check-in
           </button>
         )}
@@ -172,7 +172,7 @@ export default function ClientCheckinsPage() {
                   </p>
                   {c.weight_kg && <span className="text-xs font-semibold text-[#A8FF3A]">{c.weight_kg} kg</span>}
                 </div>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
                     { label: 'Energy', value: c.energy_level },
                     { label: 'Sleep', value: c.sleep_quality },

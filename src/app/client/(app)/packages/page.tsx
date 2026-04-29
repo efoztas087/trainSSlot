@@ -17,7 +17,7 @@ export default async function ClientPackagesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
           Packages
         </h1>
         <p className="text-[#545B6A] text-sm mt-2">Your active and past training packages.</p>
@@ -51,7 +51,7 @@ export default async function ClientPackagesPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
                   <div className="bg-[#0A0B0E] rounded-lg p-3 text-center">
                     <p className="text-2xl font-bold text-[#A8FF3A]">{remaining}</p>
                     <p className="text-xs text-[#545B6A] mt-0.5">Sessions left</p>

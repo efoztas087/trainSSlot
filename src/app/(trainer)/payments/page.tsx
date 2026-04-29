@@ -101,12 +101,12 @@ export default async function PaymentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Payments</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Payments</h1>
         <p className="text-[#545B6A] text-sm mt-2">Track every transaction and keep your cashflow strong.</p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Collected', value: `€${(totalRevenue / 100).toFixed(2)}`, icon: CreditCard, iconBg: 'bg-[#0F2010]', iconColor: 'text-[#A8FF3A]', sub: `${paidCount} payments` },
           { label: 'Outstanding', value: `€${(outstanding / 100).toFixed(2)}`, icon: AlertCircle, iconBg: 'bg-[#251B08]', iconColor: 'text-[#F5A623]', sub: `${pendingCount} pending` },
@@ -130,7 +130,7 @@ export default async function PaymentsPage() {
       </div>
 
       {/* Charts side by side */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 30-day trading view chart */}
         <div className="bg-[#131519] rounded-xl border border-[#1E2229] overflow-hidden">
           <div className="flex items-start justify-between px-6 py-4 border-b border-[#1E2229]">
@@ -225,42 +225,67 @@ export default async function PaymentsPage() {
             <h2 className="font-[family-name:var(--font-heading)] text-lg text-[#E8EAF0] uppercase tracking-wide leading-none">Payment Records</h2>
             <p className="text-xs text-[#545B6A] mt-0.5">{payments.length} entries</p>
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[#1E2229]">
-                <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Client</th>
-                <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Package</th>
-                <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Amount</th>
-                <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Status</th>
-                <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#1E2229]">
-              {payments.map((p) => {
-                const s = statusMap[p.status] ?? { label: p.status, className: 'bg-[#16181E] text-[#545B6A]' }
-                return (
-                  <tr key={p.id} className="hover:bg-[#171A1F] transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-[#0A2415] flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-bold text-[#22D17A]">{p.clients?.name?.charAt(0).toUpperCase() ?? '?'}</span>
+          {/* Mobile cards */}
+          <div className="sm:hidden divide-y divide-[#1E2229]">
+            {payments.map((p) => {
+              const s = statusMap[p.status] ?? { label: p.status, className: 'bg-[#16181E] text-[#545B6A]' }
+              return (
+                <div key={p.id} className="px-4 py-3.5 flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-[#0A2415] flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-bold text-[#22D17A]">{p.clients?.name?.charAt(0).toUpperCase() ?? '?'}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-[#E8EAF0] truncate">{p.clients?.name ?? '—'}</p>
+                    <p className="text-xs text-[#545B6A]">{p.packages?.name ?? '—'} · {new Date(p.paid_at ?? p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <span className="text-sm font-bold text-[#E8EAF0]">€{(p.amount_cents / 100).toFixed(2)}</span>
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${s.className}`}>{s.label}</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden sm:block overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[#1E2229]">
+                  <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Client</th>
+                  <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Package</th>
+                  <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Amount</th>
+                  <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Status</th>
+                  <th className="text-left text-xs font-semibold text-[#545B6A] uppercase tracking-wider px-6 py-3">Date</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#1E2229]">
+                {payments.map((p) => {
+                  const s = statusMap[p.status] ?? { label: p.status, className: 'bg-[#16181E] text-[#545B6A]' }
+                  return (
+                    <tr key={p.id} className="hover:bg-[#171A1F] transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-[#0A2415] flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs font-bold text-[#22D17A]">{p.clients?.name?.charAt(0).toUpperCase() ?? '?'}</span>
+                          </div>
+                          <span className="text-sm font-medium text-[#E8EAF0]">{p.clients?.name ?? '—'}</span>
                         </div>
-                        <span className="text-sm font-medium text-[#E8EAF0]">{p.clients?.name ?? '—'}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#545B6A]">{p.packages?.name ?? '—'}</td>
-                    <td className="px-6 py-4 text-sm font-semibold text-[#E8EAF0]">€{(p.amount_cents / 100).toFixed(2)}</td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${s.className}`}>{s.label}</span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#3E4452]">
-                      {new Date(p.paid_at ?? p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#545B6A]">{p.packages?.name ?? '—'}</td>
+                      <td className="px-6 py-4 text-sm font-semibold text-[#E8EAF0]">€{(p.amount_cents / 100).toFixed(2)}</td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${s.className}`}>{s.label}</span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-[#3E4452]">
+                        {new Date(p.paid_at ?? p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         <div className="bg-[#131519] rounded-xl border border-[#1E2229] py-16 text-center">

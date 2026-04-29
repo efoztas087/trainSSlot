@@ -24,14 +24,14 @@ export default async function ClientProgressPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
           My Progress
         </h1>
         <p className="text-[#545B6A] text-sm mt-2">Track every rep, every pound, every win. Own your journey.</p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Entries', value: entries?.length ?? 0, icon: Scale, iconBg: 'bg-[#081525]', iconColor: 'text-[#4D9EFF]', sub: 'Logged entries' },
           { label: 'Current Weight', value: latest?.weight_kg ? `${latest.weight_kg} kg` : '—', icon: TrendingUp, iconBg: 'bg-[#0A2415]', iconColor: 'text-[#22D17A]', sub: 'Latest measurement' },

@@ -6,36 +6,36 @@ export default async function PlansPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: plans } = await supabase
+  const { data: plans } = await (supabase as any)
     .from('workout_plans')
     .select('*, plan_assignments(id, is_active)')
     .eq('trainer_id', user!.id)
     .order('created_at', { ascending: false })
 
   const total = plans?.length ?? 0
-  const active = plans?.filter(p => p.is_active).length ?? 0
+  const active = plans?.filter((p: any) => p.is_active).length ?? 0
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
         <div>
-          <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
+          <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
             Workout Plans
           </h1>
           <p className="text-[#545B6A] text-sm mt-2">Build and assign training programs to your clients.</p>
         </div>
-        <Link href="/plans/new">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#A8FF3A] text-[#0A0B0E] text-sm font-semibold hover:bg-[#C8FF6A] transition-colors mt-1">
+        <Link href="/plans/new" className="flex-shrink-0">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#A8FF3A] text-[#0A0B0E] text-sm font-semibold hover:bg-[#C8FF6A] transition-colors">
             <Plus className="h-4 w-4" /> New Plan
           </button>
         </Link>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: 'Total Plans', value: total, icon: Dumbbell, iconBg: 'bg-[#081525]', iconColor: 'text-[#4D9EFF]' },
           { label: 'Active Plans', value: active, icon: CheckCircle, iconBg: 'bg-[#0A2415]', iconColor: 'text-[#22D17A]' },
-          { label: 'Assigned', value: plans?.reduce((sum, p) => sum + (p.plan_assignments?.filter((a: { is_active: boolean }) => a.is_active).length ?? 0), 0) ?? 0, icon: Users, iconBg: 'bg-[#251B08]', iconColor: 'text-[#F5A623]' },
+          { label: 'Assigned', value: plans?.reduce((sum: number, p: any) => sum + (p.plan_assignments?.filter((a: { is_active: boolean }) => a.is_active).length ?? 0), 0) ?? 0, icon: Users, iconBg: 'bg-[#251B08]', iconColor: 'text-[#F5A623]' },
         ].map((stat) => {
           const Icon = stat.icon
           return (
@@ -54,7 +54,7 @@ export default async function PlansPage() {
 
       {plans && plans.length > 0 ? (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          {plans.map(plan => {
+          {plans.map((plan: any) => {
             const assignedCount = plan.plan_assignments?.filter((a: { is_active: boolean }) => a.is_active).length ?? 0
             return (
               <Link key={plan.id} href={`/plans/${plan.id}`}>

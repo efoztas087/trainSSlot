@@ -21,7 +21,7 @@ export default async function PackagesPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">
           Packages
         </h1>
         <p className="text-[#545B6A] text-sm mt-2">Create and manage your coaching packages.</p>

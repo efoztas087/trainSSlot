@@ -24,7 +24,7 @@ export default async function ClientPlanPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">My Plan</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">My Plan</h1>
         <p className="text-[#545B6A] text-sm mt-2">Your assigned workout program.</p>
       </div>
 

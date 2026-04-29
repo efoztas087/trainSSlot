@@ -22,7 +22,7 @@ export default async function ClientLayout({ children }: { children: React.React
         userName={user.user_metadata?.name ?? 'Client'}
         avatarUrl={clientRow?.avatar_url ?? null}
       />
-      <main className="flex-1 ml-64 px-8 py-8 max-w-screen-xl">
+      <main className="flex-1 lg:ml-64 px-4 py-6 sm:px-6 sm:py-8 max-w-screen-xl pb-24 lg:pb-8">
         {children}
       </main>
     </div>

@@ -27,11 +27,11 @@ export default async function ClientSessionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[family-name:var(--font-heading)] text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Sessions</h1>
+        <h1 className="font-[family-name:var(--font-heading)] text-4xl sm:text-5xl text-[#E8EAF0] uppercase leading-none tracking-tight">Sessions</h1>
         <p className="text-[#545B6A] text-sm mt-2">Your upcoming and past training sessions.</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { label: 'Total', value: sessions?.length ?? 0, icon: CalendarDays, iconBg: 'bg-[#081525]', iconColor: 'text-[#4D9EFF]' },
           { label: 'Completed', value: completed, icon: CheckCircle, iconBg: 'bg-[#0A2415]', iconColor: 'text-[#22D17A]' },
