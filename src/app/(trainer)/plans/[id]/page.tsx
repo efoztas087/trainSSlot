@@ -10,8 +10,8 @@ export default async function PlanDetailPage({ params }: { params: Promise<{ id:
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: plan }, { data: clients }] = await Promise.all([
-    supabase
+  const [{ data: planRaw }, { data: clients }] = await Promise.all([
+    (supabase as any)
       .from('workout_plans')
       .select('*, workout_days(*, workout_exercises(*))')
       .eq('id', id)
@@ -25,6 +25,8 @@ export default async function PlanDetailPage({ params }: { params: Promise<{ id:
       .neq('status', 'inactive'),
   ])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const plan = planRaw as any
   if (!plan) notFound()
 
   const { data: assignments } = await supabase
