@@ -85,9 +85,9 @@ export function AddSessionForm({ trainerId, clients, preselectedClientId }: Prop
   }
 
   return (
-    <div className="flex items-start gap-4">
+    <div className="flex flex-col lg:flex-row items-start gap-4">
       {/* Form card */}
-      <div className="bg-[#131519] rounded-xl border border-[#1E2229] overflow-hidden w-[360px] flex-shrink-0">
+      <div className="bg-[#131519] rounded-xl border border-[#1E2229] overflow-hidden w-full lg:w-[360px] lg:flex-shrink-0">
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#1E2229]">
           <h2 className="font-[family-name:var(--font-heading)] text-lg text-[#E8EAF0] uppercase tracking-wide leading-none">
             Schedule a session

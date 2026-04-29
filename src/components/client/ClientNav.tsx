@@ -17,6 +17,8 @@ import {
   Link2,
 } from 'lucide-react'
 import { signOut } from '@/app/actions/auth'
+import { useEffect, useRef, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 const navItems = [
   { label: 'Dashboard', href: '/client/dashboard', icon: LayoutDashboard },
@@ -47,6 +49,30 @@ interface ClientNavProps {
 
 export function ClientNav({ userName, avatarUrl }: ClientNavProps) {
   const pathname = usePathname()
+  const [unread, setUnread] = useState(0)
+  const supabaseRef = useRef(createClient())
+
+  useEffect(() => {
+    const supabase = supabaseRef.current
+    async function loadUnread() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { count } = await (supabase as any)
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('client_id', user.id)
+        .eq('sender_role', 'trainer')
+        .is('read_at', null)
+      setUnread(count ?? 0)
+    }
+    loadUnread()
+    const channel = (supabaseRef.current as any)
+      .channel('client-nav-unread')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, () => loadUnread())
+      .subscribe()
+    return () => { supabaseRef.current.removeChannel(channel) }
+  }, [])
 
   return (
     <>
@@ -85,8 +111,20 @@ export function ClientNav({ userName, avatarUrl }: ClientNavProps) {
                       : 'text-[#545B6A] hover:bg-[#171A1F] hover:text-[#E8EAF0]'
                   }`}
                 >
-                  <Icon className="h-4 w-4 flex-shrink-0" />
+                  <div className="relative flex-shrink-0">
+                    <Icon className="h-4 w-4" />
+                    {item.href === '/client/messages' && unread > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 h-3.5 w-3.5 bg-[#A8FF3A] rounded-full flex items-center justify-center">
+                        <span className="text-[8px] font-bold text-[#0A0B0E]">{unread > 9 ? '9+' : unread}</span>
+                      </span>
+                    )}
+                  </div>
                   {item.label}
+                  {item.href === '/client/messages' && unread > 0 && (
+                    <span className="ml-auto bg-[#A8FF3A] text-[#0A0B0E] text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                      {unread > 9 ? '9+' : unread}
+                    </span>
+                  )}
                 </Link>
               )
             })}
@@ -131,7 +169,14 @@ export function ClientNav({ userName, avatarUrl }: ClientNavProps) {
                 isActive ? 'text-[#A8FF3A]' : 'text-[#3E4452]'
               }`}
             >
-              <Icon className="h-5 w-5" />
+              <div className="relative">
+                <Icon className="h-5 w-5" />
+                {item.href === '/client/messages' && unread > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-[#A8FF3A] rounded-full flex items-center justify-center">
+                    <span className="text-[9px] font-bold text-[#0A0B0E]">{unread > 9 ? '9+' : unread}</span>
+                  </span>
+                )}
+              </div>
               <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           )

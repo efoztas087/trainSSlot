@@ -44,6 +44,14 @@ export function ChatWindow({ trainerId, clientId, senderRole, clientName, onBack
         .eq('client_id', clientId)
         .order('created_at', { ascending: true })
       setMessages(data ?? [])
+      // Mark incoming messages as read when chat opens
+      const otherRole = senderRole === 'trainer' ? 'client' : 'trainer'
+      await (supabase as any).from('messages')
+        .update({ read_at: new Date().toISOString() })
+        .eq('trainer_id', trainerId)
+        .eq('client_id', clientId)
+        .eq('sender_role', otherRole)
+        .is('read_at', null)
     }
     load()
 
@@ -58,6 +66,13 @@ export function ChatWindow({ trainerId, clientId, senderRole, clientName, onBack
             setMessages(prev =>
               prev.some(m => m.id === payload.new.id) ? prev : [...prev, payload.new]
             )
+            // Mark as read immediately if it's from the other party
+            if (payload.new.sender_role !== senderRole) {
+              ;(supabase as any).from('messages')
+                .update({ read_at: new Date().toISOString() })
+                .eq('id', payload.new.id)
+                .then(() => {})
+            }
           }
         }
       )

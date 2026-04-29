@@ -16,7 +16,7 @@ interface CalendarPanelProps {
 
 export function CalendarPanel({ selected, hour, minute, onDaySelect, onHour, onMinute, onConfirm }: CalendarPanelProps) {
   return (
-    <div className="bg-[#131519] border border-[#1E2229] rounded-xl shadow-2xl p-5 w-[380px] flex-shrink-0">
+    <div className="bg-[#131519] border border-[#1E2229] rounded-xl shadow-2xl p-5 w-full lg:w-[380px] lg:flex-shrink-0">
       <style>{`
         .rdp { --rdp-accent-color: #A8FF3A; --rdp-background-color: #A8FF3A22; color: #E8EAF0; margin: 0; }
         .rdp-day { color: #E8EAF0; border-radius: 8px; }
