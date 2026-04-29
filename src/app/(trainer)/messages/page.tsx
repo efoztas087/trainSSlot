@@ -24,6 +24,8 @@ export default function TrainerMessagesPage() {
   const [lastMessages, setLastMessages] = useState<Record<string, LastMessage>>({})
   const [selected, setSelected] = useState<Client | null>(null)
   const [search, setSearch] = useState('')
+  // Mobile: 'list' shows client list, 'chat' shows chat window
+  const [mobileView, setMobileView] = useState<'list' | 'chat'>('list')
 
   useEffect(() => {
     async function load() {
@@ -41,7 +43,6 @@ export default function TrainerMessagesPage() {
 
       setClients(clientData ?? [])
 
-      // Load last message per client
       if (clientData && clientData.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { data: msgs } = await (supabase as any)
@@ -64,14 +65,24 @@ export default function TrainerMessagesPage() {
     load()
   }, [])
 
+  function selectClient(c: Client) {
+    setSelected(c)
+    setMobileView('chat')
+  }
+
   const filtered = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
 
   if (!trainerId) return null
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex gap-0 -mx-8 -my-8">
-      {/* Sidebar — client list */}
-      <div className="w-72 flex-shrink-0 border-r border-[#1E2229] flex flex-col bg-[#0A0B0E]">
+    // Full-height container that fills remaining space; -mx-4 sm:-mx-6 lg:-mx-8 undoes layout padding
+    <div className="flex h-[calc(100dvh-6rem)] lg:h-[calc(100dvh-4rem)] -mx-4 -my-6 sm:-mx-6 sm:-my-8 lg:-mx-8 lg:-my-8 overflow-hidden">
+
+      {/* Client list — full width on mobile when mobileView=list, hidden on mobile when mobileView=chat */}
+      <div className={`
+        ${mobileView === 'chat' ? 'hidden' : 'flex'} lg:flex
+        w-full lg:w-72 flex-shrink-0 border-r border-[#1E2229] flex-col bg-[#0A0B0E]
+      `}>
         <div className="px-4 py-5 border-b border-[#1E2229]">
           <h1 className="font-[family-name:var(--font-heading)] text-2xl text-[#E8EAF0] uppercase tracking-wide leading-none mb-3">
             Messages
@@ -100,7 +111,7 @@ export default function TrainerMessagesPage() {
                 return (
                   <button
                     key={c.id}
-                    onClick={() => setSelected(c)}
+                    onClick={() => selectClient(c)}
                     className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors ${
                       isSelected ? 'bg-[#A8FF3A]/10 border-r-2 border-[#A8FF3A]' : 'hover:bg-[#131519]'
                     }`}
@@ -131,14 +142,18 @@ export default function TrainerMessagesPage() {
         </div>
       </div>
 
-      {/* Chat area */}
-      <div className="flex-1 bg-[#0C0D10] flex flex-col min-w-0">
+      {/* Chat area — full width on mobile when mobileView=chat, hidden on mobile when mobileView=list */}
+      <div className={`
+        ${mobileView === 'list' ? 'hidden' : 'flex'} lg:flex
+        flex-1 bg-[#0C0D10] flex-col min-w-0
+      `}>
         {selected ? (
           <ChatWindow
             trainerId={trainerId}
             clientId={selected.id}
             senderRole="trainer"
             clientName={selected.name}
+            onBack={() => setMobileView('list')}
           />
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center gap-3">

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Send, ImagePlus, X } from 'lucide-react'
+import { Send, ImagePlus, X, ArrowLeft } from 'lucide-react'
 
 interface Message {
   id: string
@@ -20,9 +20,10 @@ interface Props {
   clientId: string
   senderRole: 'trainer' | 'client'
   clientName: string
+  onBack?: () => void
 }
 
-export function ChatWindow({ trainerId, clientId, senderRole, clientName }: Props) {
+export function ChatWindow({ trainerId, clientId, senderRole, clientName, onBack }: Props) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
@@ -142,8 +143,13 @@ export function ChatWindow({ trainerId, clientId, senderRole, clientName }: Prop
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-[#1E2229] flex-shrink-0">
+      <div className="px-4 py-4 border-b border-[#1E2229] flex-shrink-0">
         <div className="flex items-center gap-3">
+          {onBack && (
+            <button onClick={onBack} className="lg:hidden h-8 w-8 flex items-center justify-center rounded-lg hover:bg-[#131519] text-[#545B6A] hover:text-[#E8EAF0] transition-colors flex-shrink-0">
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          )}
           <div className="h-8 w-8 rounded-full bg-[#0F2010] flex items-center justify-center flex-shrink-0">
             <span className="text-xs font-bold text-[#A8FF3A]">{clientName.charAt(0).toUpperCase()}</span>
           </div>

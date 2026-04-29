@@ -44,8 +44,8 @@ export default function ClientMessagesPage() {
   }
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col -mx-8 -my-8">
-      <div className="px-8 py-5 border-b border-[#1E2229] flex-shrink-0">
+    <div className="flex flex-col h-[calc(100dvh-6rem)] lg:h-[calc(100dvh-4rem)] -mx-4 -my-6 sm:-mx-6 sm:-my-8 lg:-mx-8 lg:-my-8">
+      <div className="px-4 sm:px-8 py-5 border-b border-[#1E2229] flex-shrink-0">
         <h1 className="font-[family-name:var(--font-heading)] text-3xl text-[#E8EAF0] uppercase leading-none tracking-tight">
           Messages
         </h1>
